@@ -1,0 +1,39 @@
+import _ from 'lodash/fp';
+import { createSelector } from 'reselect';
+
+<% for (i = 0; i < plugins.length; i++) { %>
+<% item = plugins[i] %>
+const <%= item.selector %> = createSelector(
+    ({ <%= item.store %> }) => <%= item.store %>,
+    (state, props) => _.getOr(null, 'match.params.userId', props),
+    (<%= item.store %>, userId) => {
+      let <%= item.url %> = {};
+      if (<%= item.store %>[userId]) {
+        <%= item.url %> = <%= item.store %>[userId];
+      } else {
+        <%= item.url %> = [{text: 'Loading ...'}, '', '', ''];
+      }
+      return <%= item.url %>;
+    }
+);
+<% } %>
+
+export const themeSynopsisSelector = createSelector(
+<% for (i = 0; i < plugins.length; i++) { %>
+<% item = plugins[i] %>
+    <%= item.selector %>,
+<% } %>
+    (
+    <% for (i = 0; i < plugins.length; i++) { %>
+    <% item = plugins[i] %>
+        <%= item.url %>,
+    <% } %>
+    ) => {
+        return {
+            <% for (i = 0; i < plugins.length; i++) { %>
+            <% item = plugins[i] %>
+                <%= item.url %>: <%= item.url %>,
+            <% } %>
+        };
+    }
+);

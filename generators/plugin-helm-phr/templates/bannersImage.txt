@@ -1,0 +1,15 @@
+import React from 'react';
+import banner from '<%= bannerSrc %>';
+
+<% if (prevSrc && prevImport) { %>
+import prevImage from '<%= prevSrc %>';
+<% } %>
+
+/**
+ * This constant will be updated by Yeoman-generator in the HelmPHR-version
+ */
+export const imageSource = banner;
+
+<% if (prevSrc && prevImport) { %>
+export const <%= prevImport %> = prevImage;
+<% } %>

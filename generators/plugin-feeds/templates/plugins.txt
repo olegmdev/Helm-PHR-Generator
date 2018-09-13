@@ -1,0 +1,75 @@
+import { get } from 'lodash';
+import { themeConfigs } from '../../../themes.config';
+
+<% for (i = 0; i < plugins.length; i++) { %>
+<% item = plugins[i] %>
+import <%= item.import %> from '<%= item.pluginDirectory %>';
+<% if (item.imageImport && item.imageSource) { %>
+import { <%= item.imageImport %> } from '<%= item.imageSource %>';
+<% } %>
+const <%= item.getTitle %> = get(themeConfigs.patientsSummaryTitles, '<%= item.import %>', '<%= item.title %>');
+<% } %>
+
+
+/**
+ * The list of none-core plugins which are included to the current theme
+ *
+ * @return array
+ */
+export const themePlugins = [
+<% for (i = 0; i < plugins.length; i++) { %>
+<% item = plugins[i] %>
+    <%= item.url %>,
+<% } %>
+];
+
+/**
+ * This information is necessary for menu and URL
+ *
+ * @return array
+ */
+export const themePluginsPages = {
+<% for (i = 0; i < plugins.length; i++) { %>
+<% item = plugins[i] %>
+    '<%= item.url %>': {
+            breadcrumbs: [{
+                title: <%= item.getTitle %>,
+                state: '/<%= item.url %>',
+            }],
+        },
+<% } %>
+};
+
+/**
+ * This information is necessary for Patient Summary
+ *
+ * @return array
+ */
+export const themePatientSummaryConfig = [
+<% for (i = 0; i < plugins.length; i++) { %>
+<% item = plugins[i] %>
+<% if (item.imageImport) { %>
+    {
+      key: '<%= item.url %>',
+      title: '<%= item.title %>',
+      titleCheckboxes: '<%= item.title %>',
+      state: '<%= item.url %>',
+      nameCheckboxes: '<%= item.url %>',
+      imgPreview: <%= item.imageImport %>,
+      isDefaultSelected: true,
+    },
+<% } %>
+<% } %>
+];
+
+/**
+ * This information is necessary for Unit-tests
+ */
+export const testStoreContent = {
+<% for (i = 0; i < plugins.length; i++) { %>
+<% item = plugins[i] %>
+<% if (item.forTest) { %>
+    <%= item.forTest %>: {},
+<% } %>
+<% } %>
+};

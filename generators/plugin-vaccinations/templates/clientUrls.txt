@@ -1,0 +1,8 @@
+/**
+ * This information is necessary for plugins URLs
+ */
+export const themeClientUrls = {
+    PATIENTS: '/patients',
+    <% for (i = 0; i < plugins.length; i++) { %><% item = plugins[i] %><%= item.name %> : '<%= item.url %>',
+    <% } %>
+};
